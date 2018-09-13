@@ -1,2 +1,7 @@
 # javamator
-Automation of Java-Dropbox
+
+## Roadmap
+ - Write a python script to compare the output of an uploaded file to a JUNIT
+   - Other methods? Stdout/stdin, downlnoad as eclipse/intellij project
+ - Interface the script with an interface
+   - Django would probably be easiest

@@ -157,7 +157,7 @@
             <tbody>
               <tr v-for="junit in junits">
                 <th scope="row">${junit.junit_id}</th>
-                <td>${junit.junit_heading}</td>
+                <td>${junit.class_name}</td>
                 <td>
                   <button class="btn btn-info" v-on:click="getjunit(junit.junit_id)">Edit</button>
                   <button class="btn btn-danger" v-on:click="deletejunit(junit.junit_id)">Delete</button>
@@ -178,24 +178,34 @@
                 <form v-on:submit.prevent="addjunit()">
                 <div class="modal-body">
                     <div class="form-group">
-                      <label for="junit_heading">junit Heading</label>
+                      <label for="class_name">junit Class Name</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="junit_heading"
-                        placeholder="Enter junit Heading"
-                        v-model="newjunit.junit_heading"
+                        id="class_name"
+                        placeholder="Enter JUnit Name"
+                        v-model="newjunit.class_name"
                         required="required" >
                     </div>
                     <div class="form-group">
-                      <label for="junit_body">junit Body</label>
+                      <label for="package_name">junit Package Name</label>
                       <textarea
                         class="form-control"
-                        id="junit_body"
-                        placeholder="Enter junit Body"
-                        v-model="newjunit.junit_body"
+                        id="package_name"
+                        placeholder="Enter JUnit Package Name"
+                        v-model="newjunit.package_name"
                         required="required"
                         rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="body">junit Body</label>
+                        <textarea
+                          class="form-control"
+                          id="body"
+                          placeholder="Enter JUnit Body"
+                          v-model="newjunit.body"
+                          required="required"
+                          rows="3"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -231,12 +241,12 @@
                         required="required" >
                     </div>
                     <div class="form-group">
-                      <label for="junit_body">junit Body</label>
+                      <label for="body">junit Body</label>
                       <textarea
                         class="form-control"
-                        id="junit_body"
+                        id="body"
                         placeholder="Enter junit Body"
-                        v-model="currentjunit.junit_body"
+                        v-model="currentjunit.body"
                         required="required"
                         rows="3"></textarea>
                     </div>
@@ -276,7 +286,7 @@
         loading: true,
         currentjunit: {},
         message: null,
-        newjunit: { 'junit_heading': null, 'junit_body': null },
+        newjunit: { 'class_name': null, 'package_name': null, 'body': null },
         search_term: '',
       },
       mounted: function() {
@@ -284,9 +294,9 @@
       },
       methods: {
         getjunits: function() {
-          let api_url = '/api/junit/';
+          let api_url = '/api/JUnit/';
           if(this.search_term!==''||this.search_term!==null) {
-            api_url = '/api/junit/?search=${this.search_term}'
+            api_url = '/api/JUnit/?search=${this.search_term}'
           }
           this.loading = true;
           this.$http.get(api_url)
@@ -301,7 +311,7 @@
         },
         getjunit: function(id) {
           this.loading = true;
-          this.$http.get('/api/junit/${id}/')
+          this.$http.get('/api/JUnit/${id}/')
               .then((response) => {
                 this.currentjunit = response.data;
                 $("#editjunitModal").modal('show');
@@ -314,10 +324,12 @@
         },
         addjunit: function() {
           this.loading = true;
-          this.$http.post('/api/junit/',this.newjunit)
+          console.log(this.newjunit);
+          this.$http.post('/api/JUnit/',this.newjunit)
               .then((response) => {
                 this.loading = true;
                 this.getjunits();
+                console.log(response);
               })
               .catch((err) => {
                 this.loading = true;
@@ -326,7 +338,7 @@
         },
         updatejunit: function() {
           this.loading = true;
-          this.$http.put('/api/junit/${this.currentjunit.junit_id}/', this.currentjunit)
+          this.$http.put('/api/JUnit/${this.currentjunit.junit_id}/', this.currentjunit)
               .then((response) => {
                 this.loading = false;
                 this.currentjunit = response.data;
@@ -339,7 +351,7 @@
         },
         deletejunit: function(id) {
           this.loading = true;
-          this.$http.delete('/api/junit/${id}/')
+          this.$http.delete('/api/JUnit/${id}/')
               .then((response) => {
                 this.loading = false;
                 this.getjunits();

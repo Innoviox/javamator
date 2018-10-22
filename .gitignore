@@ -115,3 +115,5 @@ ehthumbs.db
 Thumbs.db
 *.ptn
 *.DS_Store
+*.sqlite3
+javamator/main/migrations/

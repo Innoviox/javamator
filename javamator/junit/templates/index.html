@@ -156,7 +156,7 @@
             </thead>
             <tbody>
               <tr v-for="junit in junits">
-                <th scope="row">${junit.junit_id}</th>
+                <th scope="row">${junit.id}</th>
                 <td>${junit.class_name}</td>
                 <td>
                   <button class="btn btn-info" v-on:click="getjunit(junit.junit_id)">Edit</button>
@@ -295,9 +295,11 @@
       methods: {
         getjunits: function() {
           let api_url = '/api/JUnit/';
-          if(this.search_term!==''||this.search_term!==null) {
-            api_url = '/api/JUnit/?search=${this.search_term}'
+
+          if(this.search_term!=='') {
+            api_url += '?search=' + this.search_term;
           }
+
           this.loading = true;
           this.$http.get(api_url)
               .then((response) => {

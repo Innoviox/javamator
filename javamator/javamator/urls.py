@@ -22,6 +22,7 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('junit', TemplateView.as_view(template_name='index.html')),
+    path('manage/', TemplateView.as_view(template_name='manage.html')),
+    # path('login/', login), TODO: login logic
     path('', TemplateView.as_view(template_name='index.html')),
 ]

@@ -1,463 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="utf-8">
-    <title>JUnits</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A simple crud app made with the vue js and django">
-
-    <meta name="keywords" content="vuejs, django, crudapp, restapi">
-    <!-- bootstap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- boostrap css -->
+    <meta charset=utf-8>
+    <title>Javamator</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.css' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.js"></script>
     <style>
-        /* Absolute Center Spinner */
-        .loading {
-            position: fixed;
-            z-index: 999;
-            height: 2em;
-            width: 2em;
-            overflow: show;
-            margin: auto;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-        }
-
-        /* Transparent Overlay */
-        .loading:before {
-            content: '';
-            display: block;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.3);
-        }
-
-        /* :not(:required) hides these rules from IE9 and below */
-        .loading:not(:required) {
-            /* hide "loading..." text */
-            font: 0/0 a;
-            color: transparent;
-            text-shadow: none;
-            background-color: transparent;
-            border: 0;
-        }
-
-        .loading:not(:required):after {
-            content: '';
-            display: block;
-            font-size: 10px;
-            width: 1em;
-            height: 1em;
-            margin-top: -0.5em;
-            -webkit-animation: spinner 1500ms infinite linear;
-            -moz-animation: spinner 1500ms infinite linear;
-            -ms-animation: spinner 1500ms infinite linear;
-            -o-animation: spinner 1500ms infinite linear;
-            animation: spinner 1500ms infinite linear;
-            border-radius: 0.5em;
-            -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
-            box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
-        }
-
-        /* Animation */
-
-        @-webkit-keyframes spinner {
-            0% {
-                -webkit-transform: rotate(0deg);
-                -moz-transform: rotate(0deg);
-                -ms-transform: rotate(0deg);
-                -o-transform: rotate(0deg);
-                transform: rotate(0deg);
-            }
-            100% {
-                -webkit-transform: rotate(360deg);
-                -moz-transform: rotate(360deg);
-                -ms-transform: rotate(360deg);
-                -o-transform: rotate(360deg);
-                transform: rotate(360deg);
-            }
-        }
-
-        @-moz-keyframes spinner {
-            0% {
-                -webkit-transform: rotate(0deg);
-                -moz-transform: rotate(0deg);
-                -ms-transform: rotate(0deg);
-                -o-transform: rotate(0deg);
-                transform: rotate(0deg);
-            }
-            100% {
-                -webkit-transform: rotate(360deg);
-                -moz-transform: rotate(360deg);
-                -ms-transform: rotate(360deg);
-                -o-transform: rotate(360deg);
-                transform: rotate(360deg);
-            }
-        }
-
-        @-o-keyframes spinner {
-            0% {
-                -webkit-transform: rotate(0deg);
-                -moz-transform: rotate(0deg);
-                -ms-transform: rotate(0deg);
-                -o-transform: rotate(0deg);
-                transform: rotate(0deg);
-            }
-            100% {
-                -webkit-transform: rotate(360deg);
-                -moz-transform: rotate(360deg);
-                -ms-transform: rotate(360deg);
-                -o-transform: rotate(360deg);
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes spinner {
-            0% {
-                -webkit-transform: rotate(0deg);
-                -moz-transform: rotate(0deg);
-                -ms-transform: rotate(0deg);
-                -o-transform: rotate(0deg);
-                transform: rotate(0deg);
-            }
-            100% {
-                -webkit-transform: rotate(360deg);
-                -moz-transform: rotate(360deg);
-                -ms-transform: rotate(360deg);
-                -o-transform: rotate(360deg);
-                transform: rotate(360deg);
-            }
-        }
-
-        .dropbox {
-            outline: 2px dashed grey; /* the dash box */
-            outline-offset: -10px;
-            background: lightcyan;
-            color: dimgray;
-            padding: 10px 10px;
-            min-height: 200px; /* minimum height */
-            position: relative;
-            cursor: pointer;
-        }
-
-        .input-file {
-            opacity: 0; /* invisible but it's there! */
-            width: 100%;
-            height: 200px;
-            position: absolute;
-            cursor: pointer;
-        }
-
-        .dropbox:hover {
-            background: lightblue; /* when mouse over to the drop zone, change color */
-        }
-
-        .dropbox p {
-            font-size: 1.2em;
+        .modal-header, h4, .close {
+            background-color: #5cb85c;
+            color: white !important;
             text-align: center;
-            padding: 50px 0;
+            font-size: 30px;
+            margin: auto;
+            width: 100%;
+        }
+
+        .modal-footer {
+            background-color: #f9f9f9;
+            display: block;
+        }
+
+        .footer-content {
+            text-align: center;
         }
     </style>
-
 </head>
 
-<body>
-<div id="starting">
-    <div class="container">
-        <div class="row">
-            <h1>List of junits
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjunitModal">ADD
-                    junit
-                </button>
-            </h1>
-            &emsp;
-            <div class="form-inline my-2 my-lg-0" style="margin-left: 40%;">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" v-model="search_term"
-                       aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" v-on:click.prevent="getjunits()">Search</button>
-            </div>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Heading</th>
-                    <th scope="col">Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="junit in junits">
-                    <th scope="row">${junit.id}</th>
-                    <td>${junit.class_name}</td>
-                    <td>
-                        <button class="btn btn-info" v-on:click="getjunit(junit.id)">Edit</button>
-                        <button class="btn btn-danger" v-on:click="deletejunit(junit.id)">Delete</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <!-- Add junit Modal -->
-            <div class="modal fade" id="addjunitModal" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">ADD junit</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form v-on:submit.prevent="addjunit()">
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="class_name">junit Class Name</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="class_name"
-                                            placeholder="Enter JUnit Name"
-                                            v-model="newjunit.class_name"
-                                            required="required">
-                                </div>
-                                <div class="form-group">
-                                    <label for="package_name">junit Package Name</label>
-                                    <textarea
-                                            class="form-control"
-                                            id="package_name"
-                                            placeholder="Enter JUnit Package Name"
-                                            v-model="newjunit.package_name"
-                                            required="required"
-                                            rows="3"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="file">JUnit File</label>
-                                    <div class="dropbox">
-                                        <input type="file" multiple
-                                               class="input-file"
-                                               id="file"
-                                               v-on:change="setFile">
-                                        <p>
-                                            Drag your file(s) here to begin<br> or click to browse
-                                        </p>
-                                    </div>
-                                    <textarea
-                                        class="form-control"
-                                        id="body-text"
-                                        placeholder="Enter JUnit Body"
-                                        v-model="newjunit.body"
-                                        required="required"
-                                        rows="30">
-                                    </textarea>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">Close
-                                </button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="loading" v-if="loading===true">Loading&#8230;</div>
-            </div>
-            <!-- End of add junit modal -->
-            <!-- Edit junit Modal -->
-            <div class="modal fade" id="editjunitModal" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">EDIT junit</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form v-on:submit.prevent="updatejunit()">
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="class_name">junit Class Name</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="class_name"
-                                            placeholder="Enter JUnit Name"
-                                            v-model="currentjunit.class_name"
-                                            required="required">
-                                </div>
-                                <div class="form-group">
-                                    <label for="package_name">junit Package Name</label>
-                                    <textarea
-                                            class="form-control"
-                                            id="package_name"
-                                            placeholder="Enter JUnit Package Name"
-                                            v-model="currentjunit.package_name"
-                                            required="required"
-                                            rows="3"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="body">junit Body</label>
-                                    <textarea
-                                            class="form-control"
-                                            id="body"
-                                            placeholder="Enter JUnit Body"
-                                            v-model="currentjunit.body"
-                                            required="required"
-                                            rows="3"></textarea>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">Close
-                                </button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="loading" v-if="loading===true">Loading&#8230;</div>
-            </div>
-            <!-- End of edit junit modal -->
 
+<body>
+<nav class="navbar navbar-inverse" id="sticky-top">
+    <span id="username"></span>
+
+    <div class="dropdown">
+        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            Thing
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Thing 1</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Thing 2</a>
+            <a class="dropdown-item" href="#">Thing 3</a>
         </div>
     </div>
-    <div class="loading" v-if="loading===true">Loading&#8230;</div>
+    <button type="button" class="btn btn-outline-warning navbar-btn navbar-right" id="login-btn"
+            data-target="#login-modal" data-toggle="modal">Login
+    </button>
+</nav>
 
+<div class="modal fade" id="login-modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header"><h4>Login</h4></div>
+            <div class="modal-body" style="padding:40px 50px;">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="usrname">Username</label>
+                        <input type="text" class="form-control" id="usrname" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="psw">Password</label>
+                        <input type="text" class="form-control" id="psw" placeholder="Enter password">
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Login</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <p class="footer-content">Not a member? <a href="#">Sign Up</a></p>
+                <p class="footer-content">Forgot <a href="#">Password?</a></p>
+            </div>
+        </div>
+    </div>
 </div>
-
-<!-- bootrtap js files -->
-<script   src="https://code.jquery.com/jquery-3.3.1.js"   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="   crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-
-<!-- vue.js files -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
-<script type="text/javascript">
-    const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
-
-    Vue.http.headers.common['X-CSRFToken'] = "{{ csrf_token }}";
-    new Vue({
-        el: '#starting',
-        delimiters: ['${', '}'],
-        data: {
-            junits: [],
-            loading: true,
-            currentjunit: {},
-            message: null,
-            newjunit: {'class_name': null, 'package_name': null, 'body': null},
-            search_term: '',
-            uploadFieldName: 'junits'
-        },
-        computed: {
-          isInitial: function() {
-            return this.currentStatus === STATUS_INITIAL;
-          },
-          isSaving: function() {
-            return this.currentStatus === STATUS_SAVING;
-          },
-          isSuccess: function() {
-            return this.currentStatus === STATUS_SUCCESS;
-          },
-          isFailed: function() {
-            return this.currentStatus === STATUS_FAILED;
-          }
-        },
-        mounted: function () {
-            this.getjunits();
-        },
-        methods: {
-            getjunits: function () {
-                let api_url = '/api/JUnit/';
-
-                if (this.search_term !== '') {
-                    api_url += '?search=' + this.search_term;
-                }
-
-                this.loading = true;
-                this.$http.get(api_url)
-                    .then((response) => {
-                        this.junits = response.data;
-                        this.loading = false;
-                    })
-                    .catch((err) => {
-                        this.loading = false;
-                        console.log(err);
-                    })
-            },
-            getjunit: function (id) {
-                this.loading = true;
-                this.$http.get('/api/JUnit/' + id + '/')
-                    .then((response) => {
-                        this.currentjunit = response.data;
-                        $("#editjunitModal").modal('show');
-                        this.loading = false;
-                    })
-                    .catch((err) => {
-                        this.loading = false;
-                        console.log(err);
-                    })
-            },
-            addjunit: function () {
-                this.loading = true;
-                console.log(this.newjunit);
-                this.$http.post('/api/JUnit/', this.newjunit)
-                    .then((response) => {
-                        this.loading = true;
-                        this.getjunits();
-                        console.log(response);
-                    })
-                    .catch((err) => {
-                        this.loading = true;
-                        console.log(err);
-                    })
-            },
-            updatejunit: function () {
-                this.loading = true;
-                this.$http.put('/api/JUnit/' + this.currentjunit.id, this.currentjunit)
-                    .then((response) => {
-                    this.loading = false;
-                        this.currentjunit = response.data;
-                        this.getjunits();
-                    })
-                    .catch((err) => {
-                        this.loading = false;
-                        console.log(err);
-                    })
-            },
-            deletejunit: function (id) {
-                this.loading = true;
-                this.$http.delete('/api/JUnit/' + id)
-                    .then((response) => {
-                        this.loading = false;
-                        this.getjunits();
-                    })
-                    .catch((err) => {
-                        this.loading = false;
-                        console.log(err);
-                    })
-            },
-            setFile: function() {
-                console.log("setting file");
-                file = $(".input-file").prop('files')[0];
-                fr = new FileReader();
-                fr.onload = function() {
-                    $(".dropbox").hide();
-                    $("#body-text").val(fr.result);
-                };
-                fr.readAsText(file);
-
-            }
-        }
-    });
-</script>
 </body>
+
 </html>

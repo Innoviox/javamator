@@ -159,8 +159,8 @@
                 <th scope="row">${junit.id}</th>
                 <td>${junit.class_name}</td>
                 <td>
-                  <button class="btn btn-info" v-on:click="getjunit(junit.junit_id)">Edit</button>
-                  <button class="btn btn-danger" v-on:click="deletejunit(junit.junit_id)">Delete</button>
+                  <button class="btn btn-info" v-on:click="getjunit(junit.id)">Edit</button>
+                  <button class="btn btn-danger" v-on:click="deletejunit(junit.id)">Delete</button>
                 </td>
               </tr>
             </tbody>
@@ -231,24 +231,34 @@
                 <form v-on:submit.prevent="updatejunit()">
                 <div class="modal-body">
                     <div class="form-group">
-                      <label for="junit_heading">junit Heading</label>
+                      <label for="class_name">junit Class Name</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="junit_heading"
-                        placeholder="Enter junit Heading"
-                        v-model="currentjunit.junit_heading"
+                        id="class_name"
+                        placeholder="Enter JUnit Name"
+                        v-model="currentjunit.class_name"
                         required="required" >
                     </div>
                     <div class="form-group">
-                      <label for="body">junit Body</label>
+                      <label for="package_name">junit Package Name</label>
                       <textarea
                         class="form-control"
-                        id="body"
-                        placeholder="Enter junit Body"
-                        v-model="currentjunit.body"
+                        id="package_name"
+                        placeholder="Enter JUnit Package Name"
+                        v-model="currentjunit.package_name"
                         required="required"
                         rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="body">junit Body</label>
+                        <textarea
+                          class="form-control"
+                          id="body"
+                          placeholder="Enter JUnit Body"
+                          v-model="currentjunit.body"
+                          required="required"
+                          rows="3"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -313,7 +323,7 @@
         },
         getjunit: function(id) {
           this.loading = true;
-          this.$http.get('/api/JUnit/${id}/')
+          this.$http.get('/api/JUnit/' + id + '/')
               .then((response) => {
                 this.currentjunit = response.data;
                 $("#editjunitModal").modal('show');
@@ -340,7 +350,7 @@
         },
         updatejunit: function() {
           this.loading = true;
-          this.$http.put('/api/JUnit/${this.currentjunit.junit_id}/', this.currentjunit)
+          this.$http.put('/api/JUnit/' + this.currentjunit.id, this.currentjunit)
               .then((response) => {
                 this.loading = false;
                 this.currentjunit = response.data;
@@ -353,7 +363,7 @@
         },
         deletejunit: function(id) {
           this.loading = true;
-          this.$http.delete('/api/JUnit/${id}/')
+          this.$http.delete('/api/JUnit/' + id)
               .then((response) => {
                 this.loading = false;
                 this.getjunits();

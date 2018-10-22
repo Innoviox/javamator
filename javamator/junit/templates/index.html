@@ -234,48 +234,26 @@
                                             required="required"
                                             rows="3"></textarea>
                                 </div>
-                                <!--<div class="form-group">-->
-                                <!--<label for="body">junit Body</label>-->
-                                <!--<textarea-->
-                                <!--class="form-control"-->
-                                <!--id="body"-->
-                                <!--placeholder="Enter JUnit Body"-->
-                                <!--v-model="newjunit.body"-->
-                                <!--required="required"-->
-                                <!--rows="3"></textarea>-->
-                                <!--</div>-->
-                                <form enctype="multipart/form-data" novalidate>
+                                <div class="form-group">
                                     <label for="file">JUnit File</label>
                                     <div class="dropbox">
                                         <input type="file" multiple
                                                class="input-file"
-                                               id="file">
+                                               id="file"
+                                               v-on:change="setFile">
                                         <p>
                                             Drag your file(s) here to begin<br> or click to browse
                                         </p>
                                     </div>
-                                    <!--SUCCESS-->
-                                      <div v-if="isSuccess">
-                                        <h2>Uploaded {{ uploadedFiles.length }} file(s) successfully.</h2>
-                                        <p>
-                                          <a href="javascript:void(0)" @click="reset()">Upload again</a>
-                                        </p>
-                                        <ul class="list-unstyled">
-                                          <li v-for="item in uploadedFiles">
-                                            <img :src="item.url" class="img-responsive img-thumbnail" :alt="item.originalName">
-                                          </li>
-                                        </ul>
-                                      </div>
-                                      <!--FAILED-->
-                                      <div v-if="isFailed">
-                                        <h2>Uploaded failed.</h2>
-                                        <p>
-                                          <a href="javascript:void(0)" @click="reset()">Try again</a>
-                                        </p>
-                                        <pre>{{ uploadError }}</pre>
-                                      </div>
-                                    </div>
-                                </form>
+                                    <textarea
+                                        class="form-control"
+                                        id="body-text"
+                                        placeholder="Enter JUnit Body"
+                                        v-model="newjunit.body"
+                                        required="required"
+                                        rows="30">
+                                    </textarea>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">Close
@@ -351,9 +329,8 @@
 </div>
 
 <!-- bootrtap js files -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+<script   src="https://code.jquery.com/jquery-3.3.1.js"   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="   crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
@@ -366,6 +343,7 @@
 <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
 <script type="text/javascript">
     const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
+
     Vue.http.headers.common['X-CSRFToken'] = "{{ csrf_token }}";
     new Vue({
         el: '#starting',
@@ -394,7 +372,6 @@
           }
         },
         mounted: function () {
-            this.reset();
             this.getjunits();
         },
         methods: {
@@ -468,42 +445,17 @@
                         console.log(err);
                     })
             },
-                  reset: function() {
-                    // reset form to initial state
-                    this.currentStatus = STATUS_INITIAL;
-                    this.uploadedFiles = [];
-                    this.uploadError = null;
-                  },
-                  save(formData) {
-                    // upload data to the server
-                    this.currentStatus = STATUS_SAVING;
+            setFile: function() {
+                console.log("setting file");
+                file = $(".input-file").prop('files')[0];
+                fr = new FileReader();
+                fr.onload = function() {
+                    $(".dropbox").hide();
+                    $("#body-text").val(fr.result);
+                };
+                fr.readAsText(file);
 
-                    upload(formData)
-                      .then(x => {
-                        this.uploadedFiles = [].concat(x);
-                        this.currentStatus = STATUS_SUCCESS;
-                      })
-                      .catch(err => {
-                        this.uploadError = err.response;
-                        this.currentStatus = STATUS_FAILED;
-                      });
-                  },
-                  filesChange(fieldName, fileList) {
-                    // handle file changes
-                    const formData = new FormData();
-
-                    if (!fileList.length) return;
-
-                    // append the files to FormData
-                    Array
-                      .from(Array(fileList.length).keys())
-                      .map(x => {
-                        formData.append(fieldName, fileList[x], fileList[x].name);
-                      });
-
-                    // save it
-                    this.save(formData);
-                  }
+            }
         }
     });
 </script>

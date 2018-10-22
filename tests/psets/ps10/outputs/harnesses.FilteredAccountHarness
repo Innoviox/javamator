@@ -1,0 +1,52 @@
+percentFiltered (initial): 0.0
+
+process(0)
+	process return value: true
+	percentFiltered: 100.0
+	super.process called: false
+
+process(0)
+	process return value: true
+	percentFiltered: 100.0
+	super.process called: false
+
+process(0)
+	process return value: true
+	percentFiltered: 100.0
+	super.process called: false
+
+process(10)
+	process return value: true
+	percentFiltered: 75.0
+	super.process called: true
+
+process(30)
+	process return value: true
+	percentFiltered: 60.0
+	super.process called: true
+
+process(2000)
+	process return value: true
+	percentFiltered: 50.0
+	super.process called: true
+
+process(-50)
+	process return value: true
+	percentFiltered: 42.857142857142854
+	super.process called: true
+
+process(0)
+	process return value: true
+	percentFiltered: 50.0
+	super.process called: true
+
+process(-200)
+	process return value: true
+	percentFiltered: 44.44444444444444
+	super.process called: true
+
+process(3000000)
+	process return value: true
+	percentFiltered: 40.0
+	super.process called: true
+

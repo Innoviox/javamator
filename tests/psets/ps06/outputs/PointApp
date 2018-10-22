@@ -1,0 +1,7 @@
+Imagine a coordinate plane, like in math class.
+This program will calculate the distance between a point you enter and (3, 14).
+Enter the x coordinate of a point.
+Enter the y coordinate of a point.
+The distance between (3, 14) and (3, 3) is 11.0 units.
+
+	But that number might be ugly.  So let's round it to about 11 units.

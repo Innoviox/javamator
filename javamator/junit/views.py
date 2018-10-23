@@ -2,21 +2,39 @@ from django.shortcuts import render
 from .models import Teacher
 import requests
 
-# Create your views here.
+global current
+current = None
+all_vars = {i: 'false' for i in ['login', 'login_success', 'creation', 'create_success', 'linkfailed', 'needtologin']}
+
+def with_vars(v):
+    k = all_vars.copy()
+    k.update(v)
+    return k
+
 def login(req):
     succeeded = False
+    u, p = req.POST['name'], req.POST['password']
     for obj in Teacher.objects.all():
-        if obj.name == req.POST['username'] and obj.assword == req.POST['password']:
+        if obj.name == u and obj.password == p:
             succeeded = True
-    return render(req, "index.html", {'login': 'true', 'login_success': str(succeeded).lower()})
+    global current
+    current = u
+    return render(req, "index.html", with_vars({'current': current, 'login': 'true', 'login_success': str(succeeded).lower()}))
 
 def create(req):
     succeeded = True
     print(dir(req))
     print(req.POST, req.GET)
-    u, p = req.POST['username'], req.POST['password']
+    u, p = req.POST['name'], req.POST['password']
     for obj in Teacher.objects.all():
         if obj.name == u and obj.password == p:
             succeeded = False
-    requests.post("/api/Teacher", data={'username': u, 'password': p})
-    return render(req, "index.html", {'creation': 'true', 'create_success': str(succeeded).lower()})
+    requests.post("api/Teacher", data={'name': u, 'password': p})
+    global current
+    current = u
+    return render(req, "index.html", with_vars({'current': current, 'creation': 'true', 'create_success': str(succeeded).lower()}))
+
+def manage(req):
+    global current
+    if current is None:
+        return render(req, "index.html", with_vars({'linkfailed': 'true', 'needtologin': 'true'}))

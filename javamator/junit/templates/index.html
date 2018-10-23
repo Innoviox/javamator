@@ -35,7 +35,7 @@
 
 <body>
 <nav class="navbar navbar-dark fixed-top bg-dark">
-    <span id="username"></span>
+    <span id="usr">{{current}}</span>
 
     <div class="dropdown">
         <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
@@ -49,6 +49,7 @@
             <a class="dropdown-item" href="#">Thing 3</a>
         </div>
     </div>
+    <button type="button" class="btn btn-outline-success navbar-btn" id="manage-btn">Manage</button>
     <button type="button" class="btn btn-outline-warning navbar-btn navbar-right" id="login-btn"
             data-target="#login-modal" data-toggle="modal">Login
     </button>
@@ -61,11 +62,11 @@
                 <form id="login_form" role="form" action="/login/" method="post">
                     <div class="form-group">
                         <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" placeholder="Enter email">
+                        <input type="text" class="form-control" id="username" name="name" placeholder="Enter email">
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="text" class="form-control" id="password" placeholder="Enter password">
+                        <input type="text" class="form-control" id="password" name="password" placeholder="Enter password">
                     </div>
                     {% csrf_token %}
                     <button type="submit" class="btn btn-success btn-block">Login</button>
@@ -272,21 +273,8 @@
     });
 </script>
 <script>
-    console.log({
-    {
-        login
-    }
-    })
-    if ({{
-        login
-    }
-    })
-    {
-        if ({{
-            login_success
-        }
-    })
-        {
+    if ({{login}}) {
+        if ({{login_success}}){
             Toastify({
                 text: "Logged in successfuly!",
                 backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
@@ -294,11 +282,37 @@
                 duration: 3000,
                 close: true
             }).showToast();
-        }
-    else
-        {
+        } else {
             Toastify({
                 text: "Login failed.",
+                backgroundColor: "linear-gradient(to right, #fd4b1d, #f47d41)",
+                className: "front",
+                duration: 3000,
+                close: true
+            }).showToast();
+        }
+    } else if ({{creation}}) {
+        if ({{create_success}}) {
+            Toastify({
+                text: "Account created successfuly!",
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                className: "front",
+                duration: 3000,
+                close: true
+            }).showToast();
+        } else {
+            Toastify({
+                text: "Account creation failed.",
+                backgroundColor: "linear-gradient(to right, #fd4b1d, #f47d41)",
+                className: "front",
+                duration: 3000,
+                close: true
+            }).showToast();
+        }
+    } else if ({{linkfailed}}) {
+        if ({{needtologin}}) {
+            Toastify({
+                text: "Need to log in.",
                 backgroundColor: "linear-gradient(to right, #fd4b1d, #f47d41)",
                 className: "front",
                 duration: 3000,

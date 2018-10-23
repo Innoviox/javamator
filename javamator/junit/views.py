@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Teacher
-import requests as req
+import requests
 
 # Create your views here.
 def login(req):
@@ -12,9 +12,11 @@ def login(req):
 
 def create(req):
     succeeded = True
+    print(dir(req))
+    print(req.POST, req.GET)
     u, p = req.POST['username'], req.POST['password']
     for obj in Teacher.objects.all():
         if obj.name == u and obj.password == p:
             succeeded = False
-    req.post("/api/Teacher", data={'username': u, 'password': p})
+    requests.post("/api/Teacher", data={'username': u, 'password': p})
     return render(req, "index.html", {'creation': 'true', 'create_success': str(succeeded).lower()})

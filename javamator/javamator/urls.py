@@ -17,12 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from .routers import router
 from django.views.generic import TemplateView
-from junit.views import login
+from junit.views import login, create
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('manage/', TemplateView.as_view(template_name='manage.html')),
     path('login/', login), # TODO: login logic
+    path('create/', create),
     path('', TemplateView.as_view(template_name='index.html')),
 ]

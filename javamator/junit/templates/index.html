@@ -58,7 +58,7 @@
         <div class="modal-content">
             <div class="modal-header"><h4>Login</h4></div>
             <div class="modal-body" style="padding:40px 50px;">
-                <form role="form" action="/login/" method="post">
+                <form id="login_form" role="form" action="/login/" method="post">
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input type="text" class="form-control" id="username" placeholder="Enter email">
@@ -70,10 +70,26 @@
                     {% csrf_token %}
                     <button type="submit" class="btn btn-success btn-block">Login</button>
                 </form>
+                <form id="create_form" role="form" action="/api/Teacher/" method="post">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" name="name" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="text" class="form-control" id="password" name="password" placeholder="Enter password">
+                    </div>
+                    <div class="form-group">
+                        <label for="verify">Verify Password</label>
+                        <input type="text" class="form-control" id="verify" name="verify" placeholder="Enter password">
+                    </div>
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-block">Create</button>
+                </form>
             </div>
             <div class="modal-footer">
-                <p class="footer-content">Not a member? <a href="#">Sign Up</a></p>
-                <p class="footer-content">Forgot <a href="#">Password?</a></p>
+                <p class="footer-content" id="create">Not a member? <a href="#">Sign Up</a></p>
+                <p class="footer-content" id="forgot">Forgot <a href="#">Password?</a></p>
             </div>
         </div>
     </div>
@@ -242,14 +258,52 @@
         <p>&copy; 2017-2018 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
     </footer>
 </main>
-
 <script>
-    console.log({{ login }})
-    if ({{ login }}) {
-        if ({{ login_success }}) {
-            Toastify({text: "Logged in successfuly!", backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)", className: "front", duration: 3000, close: true}).showToast();
-        } else {
-            Toastify({text: "Login failed.", backgroundColor: "linear-gradient(to right, #fd4b1d, #f47d41)", className: "front", duration: 3000, close: true}).showToast();
+    $("#create_form").toggle();
+    $("#create").click(function (e) {
+        // $("#login_form").toggle(1000);
+        // $("#create_form").toggle(1000);
+
+        // $(".modal-body").animate({height: 274}, 1000, function(){
+        $("#login_form").fadeToggle(500, function () {
+            $("#create_form").fadeToggle(500);
+        });
+        // });
+    });
+</script>
+<script>
+    console.log({
+    {
+        login
+    }
+    })
+    if ({{
+        login
+    }
+    })
+    {
+        if ({{
+            login_success
+        }
+    })
+        {
+            Toastify({
+                text: "Logged in successfuly!",
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                className: "front",
+                duration: 3000,
+                close: true
+            }).showToast();
+        }
+    else
+        {
+            Toastify({
+                text: "Login failed.",
+                backgroundColor: "linear-gradient(to right, #fd4b1d, #f47d41)",
+                className: "front",
+                duration: 3000,
+                close: true
+            }).showToast();
         }
     }
 </script>

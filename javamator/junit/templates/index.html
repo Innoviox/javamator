@@ -60,12 +60,12 @@
             <div class="modal-body" style="padding:40px 50px;">
                 <form role="form" action="/login/" method="post">
                     <div class="form-group">
-                        <label for="usrname">Username</label>
-                        <input type="text" class="form-control" id="usrname" placeholder="Enter email">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Enter email">
                     </div>
                     <div class="form-group">
-                        <label for="psw">Password</label>
-                        <input type="text" class="form-control" id="psw" placeholder="Enter password">
+                        <label for="password">Password</label>
+                        <input type="text" class="form-control" id="password" placeholder="Enter password">
                     </div>
                     {% csrf_token %}
                     <button type="submit" class="btn btn-success btn-block">Login</button>
@@ -247,9 +247,9 @@
     console.log({{ login }})
     if ({{ login }}) {
         if ({{ login_success }}) {
-            Toastify({text: "Logged in successfuly!", backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)", className: "front", duration: 300000, close: true}).showToast();
+            Toastify({text: "Logged in successfuly!", backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)", className: "front", duration: 3000, close: true}).showToast();
         } else {
-            Toastify({text: "Login failed.", backgroundColor: "linear-gradient(to right, #fd4b1d, #f47d41)", className: "front", duration: 300000, close: true}).showToast();
+            Toastify({text: "Login failed.", backgroundColor: "linear-gradient(to right, #fd4b1d, #f47d41)", className: "front", duration: 3000, close: true}).showToast();
         }
     }
 </script>

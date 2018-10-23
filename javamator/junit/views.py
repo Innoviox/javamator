@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Teacher
 import requests
 
@@ -19,6 +19,7 @@ def login(req):
             succeeded = True
     global current
     current = u
+    redirect("/")
     return render(req, "index.html", with_vars({'current': current, 'login': 'true', 'login_success': str(succeeded).lower()}))
 
 def create(req):
@@ -32,9 +33,11 @@ def create(req):
     requests.post("api/Teacher", data={'name': u, 'password': p})
     global current
     current = u
+    redirect("/")
     return render(req, "index.html", with_vars({'current': current, 'creation': 'true', 'create_success': str(succeeded).lower()}))
 
 def manage(req):
     global current
     if current is None:
         return render(req, "index.html", with_vars({'linkfailed': 'true', 'needtologin': 'true'}))
+    return render(req, "manage.html", {'owner': current})

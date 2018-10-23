@@ -171,9 +171,10 @@
 <div id="starting">
     <div class="container">
         <div class="row">
-            <h1>List of junits
+            <span id="usr">{{owner}}</span>
+            <h1>List of JUnits
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjunitModal">ADD
-                    junit
+                    JUNIT
                 </button>
             </h1>
             &emsp;
@@ -186,6 +187,7 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Owner</th>
                     <th scope="col">Heading</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -193,6 +195,7 @@
                 <tbody>
                 <tr v-for="junit in junits">
                     <th scope="row">${junit.id}</th>
+                    <th scope="row">${junit.owner}</th>
                     <td>${junit.class_name}</td>
                     <td>
                         <button class="btn btn-info" v-on:click="getjunit(junit.id)">Edit</button>
@@ -254,6 +257,7 @@
                                         rows="30">
                                     </textarea>
                                 </div>
+                                <input type="hidden" name="owner" v-model="newjunit.owner" text="{{current}}">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">Close
@@ -353,7 +357,7 @@
             loading: true,
             currentjunit: {},
             message: null,
-            newjunit: {'class_name': null, 'package_name': null, 'body': null},
+            newjunit: {'class_name': null, 'package_name': null, 'body': null, 'owner': "{{current}}"},
             search_term: '',
             uploadFieldName: 'junits'
         },

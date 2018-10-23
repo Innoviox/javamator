@@ -49,7 +49,9 @@
             <a class="dropdown-item" href="#">Thing 3</a>
         </div>
     </div>
-    <button type="button" class="btn btn-outline-success navbar-btn" id="manage-btn">Manage</button>
+    <button type="button" class="btn btn-outline-success navbar-btn" id="manage-btn" onclick="location.href='{% url 'manage' %}'">
+        Manage
+    </button>
     <button type="button" class="btn btn-outline-warning navbar-btn navbar-right" id="login-btn"
             data-target="#login-modal" data-toggle="modal">Login
     </button>

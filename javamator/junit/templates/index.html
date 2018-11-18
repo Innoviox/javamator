@@ -10,6 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <style>
         .modal-header, h4, .close {
@@ -68,7 +69,7 @@
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="text" class="form-control" id="password" name="password" placeholder="Enter password">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
                     </div>
                     {% csrf_token %}
                     <button type="submit" class="btn btn-success btn-block">Login</button>
@@ -80,11 +81,11 @@
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="text" class="form-control" id="password" name="password" placeholder="Enter password">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
                     </div>
                     <div class="form-group">
                         <label for="verify">Verify Password</label>
-                        <input type="text" class="form-control" id="verify" name="verify" placeholder="Enter password">
+                        <input type="password" class="form-control" id="verify" name="verify" placeholder="Enter password">
                     </div>
                     {% csrf_token %}
                     <button type="submit" class="btn btn-success btn-block">Create</button>
@@ -99,7 +100,6 @@
 </div>
 
 <main role="main">
-
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -112,12 +112,32 @@
                      src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
                      alt="First slide">
                 <div class="container">
+                    {% if current is None %}
                     <div class="carousel-caption text-left">
-                        <h1>Example headline.</h1>
-                        <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta
-                            gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                        <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+                        <h1>Your one place for grading java projects.</h1>
+                        <p>Javamator (Java-Automator) automates your grading! Simply upload your JUnit, have your
+                        students upload their files, and sit back and relax!</p>
+                        <p><a class="btn btn-lg btn-primary" href="#" role="button" id="sign-up">Sign up today</a></p>
                     </div>
+                    {% else %}
+                    <div class="carousel-caption text-left">
+                        <h1>Your current projects:</h1>
+                        <div class="row">
+                            <div class="col-3">Name</div>
+                            <div class="col-6">Description</div>
+                            <div class="col-2">Students</div>
+                            <div class="col-1">Manage</div>
+                        </div>
+                        {% for p in projects %}
+                        <div class="row">
+                            <div class="col-3">{{ p.name }}</div>
+                            <div class="col-6">{{ p.desc }}</div>
+                            <div class="col-2">0</div>
+                            <div class="col-1"><a href="{% url 'manage-project/{{p.id}}' %}">Manage</a>a></div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="carousel-item">
@@ -166,7 +186,7 @@
 
         <!-- Three columns of text below the carousel -->
         <div class="row">
-            <div class="col-lg-4">
+            <div class='col-lg-4 hover-column'>
                 <img class="rounded-circle"
                      src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
                      alt="Generic placeholder image" width="140" height="140">
@@ -176,7 +196,7 @@
                     cursus magna.</p>
                 <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
             </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4">
+            <div class="col-lg-4 hover-column">
                 <img class="rounded-circle"
                      src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
                      alt="Generic placeholder image" width="140" height="140">
@@ -186,7 +206,7 @@
                     condimentum nibh.</p>
                 <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
             </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4">
+            <div class="col-lg-4 hover-column">
                 <img class="rounded-circle"
                      src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
                      alt="Generic placeholder image" width="140" height="140">
@@ -258,12 +278,12 @@
     <!-- FOOTER -->
     <footer class="container">
         <p class="float-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2017-2018 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        <p>&copy; 2018 Simon Chervenak, Kevin Higgs, in affiliation with the MBHS 2018 Sysops. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
     </footer>
 </main>
 <script>
     $("#create_form").toggle();
-    $("#create").click(function (e) {
+    function toggleForm(e) {
         // $("#login_form").toggle(1000);
         // $("#create_form").toggle(1000);
 
@@ -271,7 +291,21 @@
         $("#login_form").fadeToggle(500, function () {
             $("#create_form").fadeToggle(500);
         });
-        // });
+        // });}
+    }
+    $("#create").click(toggleForm);
+    $("#sign-up").click(function (e) {
+        $("#login-btn").click();
+        $("#create").click();
+        // $("#create_form").toggle();
+        // toggleForm(e);
+    });
+    // onmouseover="this.className = 'animated pulse col-lg-4' " onmouseout="this.className='col-lg-4'"
+    $(".hover-column").mouseover(function(e) {
+        this.className = 'animated pulse col-lg-4 hover-column';
+    });
+    $(".hover-column").mouseout(function(e) {
+        this.className = 'col-lg-4 hover-column';
     });
 </script>
 <script>

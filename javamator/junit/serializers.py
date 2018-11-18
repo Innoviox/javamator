@@ -7,6 +7,7 @@ class JUnitSerializer(serializers.ModelSerializer):
         model = JUnit
         fields = '__all__'
 
+
 class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher

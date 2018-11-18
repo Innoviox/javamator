@@ -1,15 +1,18 @@
 from django.shortcuts import render, redirect
-from .models import Teacher
+from .models import Teacher, Project
 import requests
 
 global current
 current = None
-all_vars = {i: 'false' for i in ['login', 'login_success', 'creation', 'create_success', 'linkfailed', 'needtologin']}
+all_vars = {i: 'false' for i in ['login', 'login_success',
+                                 'creation', 'create_success', 'linkfailed', 'needtologin']}
+
 
 def with_vars(v):
     k = all_vars.copy()
     k.update(v)
     return k
+
 
 def login(req):
     succeeded = False
@@ -21,6 +24,7 @@ def login(req):
     current = u
     redirect("/")
     return render(req, "index.html", with_vars({'current': current, 'login': 'true', 'login_success': str(succeeded).lower()}))
+
 
 def create(req):
     succeeded = True
@@ -36,8 +40,13 @@ def create(req):
     redirect("/")
     return render(req, "index.html", with_vars({'current': current, 'creation': 'true', 'create_success': str(succeeded).lower()}))
 
+
 def manage(req):
     global current
     if current is None:
         return render(req, "index.html", with_vars({'linkfailed': 'true', 'needtologin': 'true'}))
-    return render(req, "manage.html", {'owner': current})
+    return render(req, "manage-junit.html", {'owner': current})
+
+
+def manage_project(req, id):
+    project = Project.objects.get(id=id)

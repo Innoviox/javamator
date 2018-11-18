@@ -17,13 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from .routers import router
 from django.views.generic import TemplateView
-from junit.views import login, create, manage
+from junit.views import login, create, manage, manage_project
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('manage/', manage, name='manage'), # TemplateView.as_view(template_name='manage.html')),
-    path('login/', login), # TODO: login logic
+    # TemplateView.as_view(template_name='manage-junit.html')),
+    path('manage/', manage, name='manage'),
+    path('project/<int:id>', manage_project, name='project'),
+    path('login/', login),  # TODO: login logic
     path('create/', create),
     path('', TemplateView.as_view(template_name='index.html')),
 ]
